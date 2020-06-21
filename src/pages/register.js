@@ -37,8 +37,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignIn() {
   const history = useHistory()
-  console.log(history)
-  history.push('/login')
   const classes = useStyles()
   const [name, handlenameChange] = useInput()
   const [pass, handlepassChange] = useInput()
@@ -46,8 +44,7 @@ export default function SignIn() {
   function handleSubmit() {
     console.log(name, pass)
     axios.post('http://localhost:4000/register', { username: name, password: pass }).then((res) => {
-      console.log(res.data.success)
-      // res.data.success ? history.push('/login') : setError('ثبت نام با موفقیت انجام نشد')
+      res.data.success ? history.push('/login') : setError('ثبت نام با موفقیت انجام نشد')
     })
   }
   return (

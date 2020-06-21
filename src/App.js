@@ -1,16 +1,18 @@
 import React from 'react'
-import { BrowserRouter as Router, Link, Route, useHistory } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Login from './pages/login'
 import './App.css'
 import Register from './pages/register'
-import history from './components/history'
+import history from './utils/history'
 function App() {
   return (
     <Router history={history}>
       <div className="App">
-        <Register />
+        <Switch>
+          <Route exact path="/" component={Register} />
+          <Route exact path="/login" component={Login}></Route>
+        </Switch>
       </div>
-      <Route path="/login" component={Login}></Route>
     </Router>
   )
 }
