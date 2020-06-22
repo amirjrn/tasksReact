@@ -1,6 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Ca
 import Login from './pages/login'
 import Tasks from './pages/tasks'
 import './App.css'
