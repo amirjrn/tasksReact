@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
+import useTempState from './../hooks/useTempState'
 import useInput from '../hooks/useInput'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import Alert from '@material-ui/lab/Alert'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import TextField from '@material-ui/core/TextField'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -40,12 +42,17 @@ export default function SignIn() {
   const classes = useStyles()
   const [name, handlenameChange] = useInput()
   const [pass, handlepassChange] = useInput()
-  const [err, setError] = useState()
+  const [errors, setError] = useTempState({ timeout: 2500, initialState: [] })
   function handleSubmit() {
-    console.log(name, pass)
-    axios.post('http://localhost:4000/register', { username: name, password: pass }).then((res) => {
-      res.data.success ? history.push('/login') : setError('ثبت نام با موفقیت انجام نشد')
-    })
+    axios
+      .post('http://localhost:4000/register', { username: name, password: pass })
+      .then((response) => {
+        history.push('/login')
+      })
+      .catch((error) => {
+        console.log(error.response.data.msg)
+        setError(error.response.data.msg)
+      })
   }
   return (
     <Container component="main" maxWidth="xs">
@@ -55,9 +62,10 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           ثبت نام
         </Typography>
-        <Typography component="h2" variant="h5">
-          {err}
-        </Typography>
+        {errors.map((error) => (
+          <Alert severity="error">{error}</Alert>
+        ))}
+
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
