@@ -3,24 +3,24 @@ import Paper from '@material-ui/core/Paper'
 import { Chart, BarSeries, Title, ArgumentAxis, ValueAxis } from '@devexpress/dx-react-chart-material-ui'
 
 import { Animation } from '@devexpress/dx-react-chart'
-
-export default class Chart extends React.PureComponent {
-  constructor(props) {
-    super(props)
+export default ({ tasks }) => {
+  const data = []
+  for (let [key, value] of Object.entries(tasks)) {
+    console.log('log from nanat', value)
+    const done_tasks = value.filter((task) => task._done === true)
+    data.push({ date: key, number: done_tasks.length })
   }
+  console.log('log from chart', data)
+  return (
+    <Paper>
+      <Chart data={data}>
+        <ArgumentAxis />
+        <ValueAxis max={7} />
 
-  render() {
-    return (
-      <Paper>
-        <Chart data={this.props.tasks}>
-          <ArgumentAxis />
-          <ValueAxis max={7} />
-
-          <BarSeries valueField="number" argumentField="date" />
-          <Title text="تسک های روزانه" />
-          <Animation />
-        </Chart>
-      </Paper>
-    )
-  }
+        <BarSeries valueField="number" argumentField="date" />
+        <Title text="گزارش تسک های انجام شده" />
+        <Animation />
+      </Chart>
+    </Paper>
+  )
 }

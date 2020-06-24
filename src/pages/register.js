@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import useTempState from './../hooks/useTempState'
@@ -45,12 +45,11 @@ export default function SignIn() {
   const [errors, setError] = useTempState({ timeout: 2500, initialState: [] })
   function handleSubmit() {
     axios
-      .post('http://localhost:4000/register', { username: name, password: pass })
+      .post('http://localhost:4000/register', { username: name, password: pass }, { withCredentials: true })
       .then((response) => {
         history.push('/login')
       })
       .catch((error) => {
-        console.log(error.response.data.msg)
         setError(error.response.data.msg)
       })
   }
@@ -91,7 +90,6 @@ export default function SignIn() {
             autoComplete="current-password"
             onChange={handlepassChange}
           />
-          <FormControlLabel control={<Checkbox value="remember" color="primary" />} label="مرا به  خاطر بسپار" />
           <Button onClick={handleSubmit} fullWidth variant="contained" color="primary" className={classes.submit}>
             ثبت نام
           </Button>

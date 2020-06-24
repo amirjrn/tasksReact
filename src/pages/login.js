@@ -46,7 +46,7 @@ export default function SignIn() {
   function handleSubmit() {
     console.log(name, pass)
     axios
-      .post('http://localhost:4000/login', { username: name, password: pass })
+      .post('http://localhost:4000/login', { username: name, password: pass }, { withCredentials: true })
       .then((response) => {
         history.push('/tasks')
       })
