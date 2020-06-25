@@ -6,11 +6,9 @@ import { Animation } from '@devexpress/dx-react-chart'
 export default ({ tasks }) => {
   const data = []
   for (let [key, value] of Object.entries(tasks)) {
-    console.log('log from nanat', value)
     const done_tasks = value.filter((task) => task._done === true)
     data.push({ date: key, number: done_tasks.length })
   }
-  console.log('log from chart', data)
   return (
     <Paper>
       <Chart data={data}>

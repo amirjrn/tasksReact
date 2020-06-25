@@ -11,40 +11,29 @@ import Avatar from '@material-ui/core/Avatar'
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    left: '50%',
+    transform: 'translate(-50%)',
     width: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
 }))
 
-export default function TasksList({ tasks, setActive }) {
+export default function TasksList({ tasks, setActive, setTasks }) {
   const classes = useStyles()
   const [checked, setChecked] = React.useState([1])
   const tasksByDate = Object.values(tasks).map((task) => task)
-  const tasksList = tasksByDate.flat()
+  const tasksList = tasksByDate.flat().filter((task) => task._done === false)
 
-  function handleDoTaks(taskId) {
+  const handleDoTask = (taskId) => () => {
     axios
-      .post('http://locahost:4000/dotask', { taskId: taskId })
+      .post('http://localhost:4000/dotask', { taskId: taskId }, { withCredentials: true })
       .then((res) => {
-        console.log(res)
+        setTasks(res.data.tasks)
       })
       .catch((err) => {
         console.log(err)
       })
-  }
-
-  const handleToggle = (value) => () => {
-    const currentIndex = checked.indexOf(value)
-    const newChecked = [...checked]
-
-    if (currentIndex === -1) {
-      newChecked.push(value)
-    } else {
-      newChecked.splice(currentIndex, 1)
-    }
-
-    setChecked(newChecked)
   }
 
   return (
@@ -56,13 +45,7 @@ export default function TasksList({ tasks, setActive }) {
           <ListItem key={task._id} button>
             <ListItemText onClick={() => setActive(desc)} id={labelId} primary={`عنوان تسک :  ${task._name}`} />
             <ListItemSecondaryAction>
-              <Checkbox
-                edge="end"
-                onClick={() => handleDoTaks(task._id)}
-                onChange={handleToggle(task)}
-                checked={checked.indexOf(task) !== -1}
-                inputProps={{ 'aria-labelledby': labelId }}
-              />
+              <Checkbox edge="end" onClick={handleDoTask(task._id)} checked={checked.indexOf(task) !== -1} inputProps={{ 'aria-labelledby': labelId }} />
             </ListItemSecondaryAction>
           </ListItem>
         )

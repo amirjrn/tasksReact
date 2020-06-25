@@ -17,7 +17,7 @@ const Tasks = () => {
     <div style={{ padding: 40 }}>
       <Grid container spacing={2}>
         <Grid item xs alignItems="center">
-          <List tasks={tasks} setActive={setActive} />
+          <List tasks={tasks} setActive={setActive} setTasks={setTasks} />
         </Grid>
         <Grid item xs>
           <Chart tasks={tasks} />
@@ -25,7 +25,7 @@ const Tasks = () => {
       </Grid>
       <Grid container spacing={1} style={{ padding: 40 }}>
         <Grid item xs alignItems="center">
-          <Box>{`توضحیات تسک : ${active}`}</Box>
+          {active ? <Box>{`توضحیات تسک : ${active}`}</Box> : null}
         </Grid>
       </Grid>
     </div>
